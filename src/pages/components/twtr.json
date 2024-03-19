@@ -1,0 +1,54 @@
+{
+    "interface": "FungibleToken",
+    "id": "FcScaNdN3TRPMwcgqHj1E5GuEh1rNesBGVN5WtZuad1z",
+    "content": {
+        "$schema": "https://schema.metaplex.com/nft1.0.json",
+        "json_uri": "https://ipfs.io/ipfs/QmVLkHy2nmkTtYAr9VPL6jusckr8sdbKK7cEdDbxsuzVuV",
+        "files": [
+            {
+                "uri": "https://ipfs.io/ipfs/QmcjVdSFfWsecrqusiviGb2HJri4PKJjLs8fa3hzycv3xL",
+                "cdn_uri": "https://cdn.helius-rpc.com/cdn-cgi/image//https://ipfs.io/ipfs/QmcjVdSFfWsecrqusiviGb2HJri4PKJjLs8fa3hzycv3xL",
+                "mime": "image/png"
+            }
+        ],
+        "metadata": {
+            "description": "It will always be known as Twitter",
+            "name": "Twitter",
+            "symbol": "TWTR",
+            "token_standard": "Fungible"
+        },
+        "links": { "image": "https://ipfs.io/ipfs/QmcjVdSFfWsecrqusiviGb2HJri4PKJjLs8fa3hzycv3xL" }
+    },
+    "authorities": [{ "address": "AVGnretU4xYb39DaMLvAHsHMFsMvNyhSrgCDMt9EQwgJ", "scopes": ["full"] }],
+    "compression": {
+        "eligible": false,
+        "compressed": false,
+        "data_hash": "",
+        "creator_hash": "",
+        "asset_hash": "",
+        "tree": "",
+        "seq": 0,
+        "leaf_id": 0
+    },
+    "grouping": [],
+    "royalty": {
+        "royalty_model": "creators",
+        "target": null,
+        "percent": 0,
+        "basis_points": 0,
+        "primary_sale_happened": false,
+        "locked": false
+    },
+    "creators": [],
+    "ownership": { "frozen": false, "delegated": false, "delegate": null, "ownership_model": "token", "owner": "" },
+    "supply": null,
+    "mutable": false,
+    "burnt": false,
+    "token_info": {
+        "symbol": "TWTR",
+        "supply": 858532286590915200,
+        "decimals": 9,
+        "token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "price_info": { "price_per_token": 0.00016490264, "currency": "USDC" }
+    }
+}

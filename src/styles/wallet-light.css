@@ -1,0 +1,88 @@
+.wallet-adapter-dropdown {
+  background-color: transparent !important;
+  color: #333 !important;
+}
+
+
+.wallet-adapter-button { 
+  font-size: 16px !important;
+  color: #999 !important;
+  font-weight: 100 !important;
+  padding: 12px !important;
+  margin: 0 !important;
+  border-radius: 3px !important;
+  background-color: rgba(255, 255, 255) !important;
+}
+
+.wallet-adapter-button-trigger {
+  background-color: transparent !important;
+  border: 1px solid #333 !important;
+  
+}
+
+/* wallet-adapter-dropdown-list wallet-adapter-dropdown-list-active */
+
+.wallet-button:hover {
+  /* color: white !important; */
+}
+
+.wallet-adapter-dropdown-list,
+.wallet-adapter-dropdown-list-active {
+  /* opacity: 3.0 !important; */
+  border: 1px solid #333 !important;
+  background-color: black !important;
+  font-size: 14px !important;
+  font-weight: 100 !important;
+  padding: 12px !important;
+  margin: 0 !important;
+  border-radius: 2px !important;
+}
+
+.wallet-adapter-dropdown-list-item {
+  color: #333 !important;
+  font-size: 14px !important;
+  font-weight: 100 !important;
+  padding: 12px !important;
+  margin: 0 !important;
+  border-radius: 2px !important;
+  background-color: black !important;
+  border: 1px solid #333 !important;
+  color: #ddd !important;
+}
+
+.wallet-adapter-dropdown-list-item:hover {
+  background-color: rgba(184, 180, 180, 0.8) !important;
+  border-radius: none !important;
+  color: black !important;
+}
+
+
+
+
+
+.wallet-adapter-modal-wrapper {
+  background-color: #f5f5f5 !important;
+  color: #333 !important;
+  border-radius: 3px !important;
+  border-color: none !important;
+}
+
+.wallet-adapter-modal-button-close {
+  background-color: #ffffff !important;
+  color: #333 !important;
+}
+
+.wallet-adapter-modal-title {
+  color: #222 !important;
+  font-weight: bold !important;
+}
+
+.wallet-adapter-modal-list {
+  background-color: #eee !important;
+  color: #333 !important;
+}
+
+.wallet-adapter-button-start-icon {
+  fill: #666 !important;
+  /* Assuming SVG icon */
+}
