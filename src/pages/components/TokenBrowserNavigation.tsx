@@ -1,15 +1,18 @@
-import React from 'react';
-import { TbTrash } from "react-icons/tb";
+// src/pages/components/TokenBrowserNavigation.tsx
+import React, { useState } from 'react';
+import IndexNavigation from './IndexNavigation';
 
 interface Asset {
-  token_info?: {
-    balance?: number;
-    price_info?: {
-      total_price?: number;
-      currency?: string;
-    };
-  };
+  id: string;
   interface: string;
+  content_metadata_name: string | null;
+  content_metadata_symbol: string | null;
+  token_info_symbol: string | null;
+  token_info_balance: string;
+  asset: {
+    token_info_decimals: number | null;
+    token_info_supply: string | null;
+  };
 }
 
 interface TokenBrowserNavigationProps {
@@ -18,6 +21,9 @@ interface TokenBrowserNavigationProps {
   fungibleTokens: Asset[];
   nftV1Assets: Asset[];
   programmableNFTs: Asset[];
+  prices: Record<string, number>;
+  ownerAddress: string;
+  assets: Asset[];
 }
 
 const TokenBrowserNavigation: React.FC<TokenBrowserNavigationProps> = ({
@@ -25,42 +31,68 @@ const TokenBrowserNavigation: React.FC<TokenBrowserNavigationProps> = ({
   activeAssetType,
   fungibleTokens,
   nftV1Assets,
-  programmableNFTs
+  programmableNFTs,
+  prices,
+  ownerAddress,
+  assets,
 }) => {
+
   // Calculate total value of all assets in USD
   const totalValueUSD = [...fungibleTokens, ...nftV1Assets, ...programmableNFTs].reduce((acc, asset) => {
-    return acc + (asset.token_info?.price_info?.total_price || 0);
+    const { token_info_balance, asset: { token_info_decimals, token_info_supply } } = asset;
+    const price = prices[asset.id]?.price || 0;
+    const balanceValue = parseFloat(token_info_balance) / Math.pow(10, token_info_decimals || 0);
+    const supplyValue = parseFloat(token_info_supply || '0');
+    const totalValue = balanceValue * price * supplyValue;
+    return acc + totalValue;
   }, 0);
+
+  const createIndex = async (name: string, description: string, isPublic: boolean, assetIds: string[]) => {
+    try {
+      const response = await fetch('/api/manage-index', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          public: isPublic,
+          ownerAddress,
+          assetIds,
+        }),
+      });
+
+      if (response.ok) {
+        const newIndex = await response.json();
+        console.log('New index created:', newIndex);
+        // Update the UI or perform any necessary actions after creating the index
+      } else {
+        console.error('Failed to create index');
+      }
+    } catch (error) {
+      console.error('Error creating index:', error);
+    }
+  };
+
+  const [activeFilter, setActiveFilter] = useState('all');
+
+  const handleFilterChange = (filter: string) => {
+    setActiveFilter(filter);
+    // Perform any necessary actions based on the selected filter
+  };
 
   return (
     <div className="flex items-center justify-between p-4">
       <p>Total Value (USD): <span className="text-green-700">${totalValueUSD.toFixed(2)}</span></p>
 
-      <div className='space-x-2'>
-        <button className="btn btn-sm btn-neutral">
-          All
-        </button>
-        <button className="btn btn-sm btn-neutral">
-          Long
-          <div className="badge">7</div>
-        </button>
-        <button className="btn btn-sm btn-neutral">
-          Short
-          <div className="badge">39</div>
-        </button>
-        <button className="btn btn-sm btn-neutral">
-          <TbTrash />
-          <div className="badge">7</div>
-        </button>
-        <div className="dropdown dropdown-bottom dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-sm btn-neutral m-1">Animals</div>
-          <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-            <li><a>Rugged</a></li>
-            <li><a>Community Takeover</a></li>
-          </ul>
-        </div>
-        {/* add a field that allows the user to create a new custom category in addition to "animals". Long, SHort, and Trach are default categorys, and there has to be a way to add a new category ans well as list the existing categories in a nice ui that is easy to use. */}
-      </div>
+
+      <IndexNavigation
+        createIndex={createIndex}
+        assets={assets}
+        ownerAddress={ownerAddress}
+        onFilterChange={handleFilterChange}
+      />
 
       <ul className="menu menu-vertical lg:menu-horizontal border border-neutral">
         <li className={activeAssetType === 'FungibleToken' ? 'bordered' : ''} onClick={() => setActiveAssetType('FungibleToken')}>
@@ -73,10 +105,6 @@ const TokenBrowserNavigation: React.FC<TokenBrowserNavigationProps> = ({
           <a>Programmable NFTs ({programmableNFTs.length})</a>
         </li>
       </ul>
-
-
-
-
     </div>
   );
 };

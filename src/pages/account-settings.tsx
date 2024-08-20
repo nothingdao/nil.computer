@@ -1,12 +1,16 @@
-// sr/pages/swap-page.tsx
+// sr/pages/account-settings.tsx
 import { useWallet } from '@solana/wallet-adapter-react';
+// import { Head } from 'next/document';
 
 const AccountPage = () => {
   const { publicKey } = useWallet();
 
-
-  return (
-
+  return (<>
+    {/* <Head>
+      <title>NIL: Account Settings</title>
+      <meta name="description" content="View your wallet's dashboard" />
+      <link rel="icon" href="/favicon.ico" />
+    </Head> */}
 
     <div className="flex items-center justify-center">
 
@@ -49,7 +53,7 @@ const AccountPage = () => {
 
       </div>
     </div>
-
+  </>
   );
 };
 

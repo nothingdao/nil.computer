@@ -1,77 +1,103 @@
-// src/pages/components/TokenComponent.tsx
+// FungibleTokenComponent.tsx
 import Link from 'next/link';
 import React from 'react';
 
 interface TokenProps {
   asset: {
-    interface: string; // 'FungibleToken', 'V1_NFT', etc.
     id: string;
-    content: {
-      metadata: {
-        name?: string;
-        symbol?: string;
-        // Add other fields as needed
-      };
-      files?: Array<{ uri: string; cdn_uri?: string; mime?: string }>;
-    };
-    token_info?: {
-      balance?: number;
-      symbol?: string;
-      supply?: number;
-      decimals?: number;
-      price_info?: {
-        price_per_token: number;
-        total_price: number;
-        currency: string;
-      };
-    };
+    content_metadata_name?: string;
+    content_metadata_symbol?: string;
+    content_links_image?: string; // Now this directly uses the correct image URL
+    token_info_symbol?: string;
+    token_info_balance?: string;
+    token_info_decimals?: number;
   };
+  price?: number;
 }
 
-const FungibleTokenComponent: React.FC<TokenProps> = ({ asset }) => {
-  const { content, token_info, id } = asset;
-  const name = content.metadata.name;
-  const symbol = content.metadata.symbol || token_info?.symbol;
-  const imageUri = content.files?.[0]?.cdn_uri || content.files?.[0]?.uri;
 
-  // Format total_price with two decimal places and commas
-  const formattedTotalPrice = token_info?.price_info?.total_price.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+const FungibleTokenComponent: React.FC<TokenProps> = ({ asset, price }) => {
+  if (!asset || !asset.id) {
+    return null;
+  }
 
-  const formattedBalance = token_info?.balance && token_info?.decimals !== undefined
-    ? (token_info.balance / Math.pow(10, token_info.decimals)).toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: Math.min(Math.max(token_info.decimals, 2), 20),
-    })
-    : null;
+  const {
+    id,
+    content_metadata_name,
+    content_links_image,
+    token_info_symbol,
+    token_info_balance,
+    token_info_decimals,
+  } = asset;
 
-  // Sample data for testing purposes
-  const testData = Array.from({ length: 10 }, () => Math.floor(Math.random() * 17875600));
+  const name = content_metadata_name || 'Token';
+  const imageUri = content_links_image || '';  // This should now correctly reference the nested image URI
+
+  console.log('FungibleTokenComponent: imageUri:', imageUri);
+
+  const formatBalance = (balance: string | undefined, decimals: number | undefined): string => {
+    if (!balance || decimals === undefined) {
+      return '0';
+    }
+
+    const balanceNumber = parseFloat(balance);
+    return (balanceNumber / 10 ** decimals).toLocaleString('en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    });
+  };
+
+  const calculateTotalValue = (balance: string | undefined, decimals: number | undefined, price: number | undefined): number => {
+    if (!balance || decimals === undefined || !price) {
+      return 0;
+    }
+
+    const balanceNumber = parseFloat(balance);
+    return (balanceNumber / 10 ** decimals) * price;
+  };
+
+  const totalValue = calculateTotalValue(token_info_balance, token_info_decimals, price);
 
   return (
-    <tr className='border border-neutral'>
+    <tr className="border border-neutral">
       <td>
-        <Link
-          href={`/token/${id}`}
-        >
+        <Link href={`/token/${id}`}>
           <div className="flex items-center space-x-3 hover:cursor-pointer">
             <div className="avatar">
-              <div className="w-8 rounded-full skeleton">
-                {imageUri && <img src={imageUri} alt={name || 'Token'} />}
+              <div className="w-10 rounded-full border border-neutral">
+                {imageUri ? <img src={imageUri} alt={name} /> : <div>No Image Available</div>}
               </div>
             </div>
             <div>
-              {name && <div className="font-bold">{name}</div>}
+              <div className="font-thin">{name}</div>
             </div>
           </div>
         </Link>
       </td>
-      <td className="uppercase">{symbol}</td>
-      <td>{formattedTotalPrice}</td>
-      <td>{token_info?.price_info?.price_per_token}</td>
-      <td>{formattedBalance}</td>
+      <td className="uppercase font-thin">{token_info_symbol}</td>
+      <td>
+        <span className="font-thin">
+          ${totalValue.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }) || '0.00'}
+          <a href={`https://birdeye.so/token/${id}?chain=solana`} target="_blank" className="text-xs text-gray-500 ml-2">
+            BE
+          </a>
+        </span>
+      </td>
+      <td>
+        {price !== undefined && (
+          <span className="font-thin">
+            {price.toLocaleString('en-US', {
+              maximumFractionDigits: 6,
+            }) || '0'}
+          </span>
+        )}
+      </td>
+      <td>
+        <span className="font-thin">{formatBalance(token_info_balance, token_info_decimals)}</span>
+      </td>
     </tr>
   );
 };

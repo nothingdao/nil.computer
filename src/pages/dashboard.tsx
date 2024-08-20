@@ -8,10 +8,12 @@ import TokenBrowser from './components/TokenBrowser';
 const DashboardPage: NextPage = () => {
   const wallet = useWallet();
 
+  console.log('DashboardPage: wallet.publicKey:', wallet.publicKey);
+
   return (
     <div>
       <Head>
-        <title>Dashboard</title>
+        <title>NIL: Wallet Browser</title>
         <meta name="description" content="View your wallet's dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

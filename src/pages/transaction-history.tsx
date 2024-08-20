@@ -22,7 +22,7 @@ const TransactionHistoryPage: React.FC = () => {
   const fetchTransactions = async (beforeSignature?: string) => {
     if (!wallet.publicKey) return;
 
-    let url = `https://api.helius.xyz/v0/addresses/${wallet.publicKey.toBase58()}/transactions?api-key=${process.env.NEXT_PUBLIC_HELIUS_API_KEY}`;
+    let url = `https://api.helius.xyz/v0/addresses/H4K47p7GnaCG9xxFx6dkeEqFn8uSmcGJQJrw2q8uQKXg/transactions?api-key=${process.env.NEXT_PUBLIC_HELIUS_API_KEY}`;
     if (beforeSignature) {
       url += `&before=${beforeSignature}`;
     }
@@ -100,9 +100,7 @@ const TransactionHistoryPage: React.FC = () => {
         <h1>Transaction History</h1>
 
         <div className="flex flex-wrap items-center gap-2 mt-4">
-          <button className="btn btn-sm flex-grow" onClick={fetchAndParseTransactions}>Fetch Transactions</button>
-          <button className="btn btn-sm flex-grow" onClick={fetchAndParseTransactions}>Generate Report</button>
-
+          <button className="btn btn-sm btn-neutral flex-grow" onClick={fetchAndParseTransactions}>Fetch Transactions</button>
           <select
             className="select select-sm select-bordered flex-grow"
             onChange={(e) => handleFilterChange(e.target.value)}
@@ -117,9 +115,6 @@ const TransactionHistoryPage: React.FC = () => {
 
         <div className="text-xs mt-4">All Time Fees Total: {getTotalFeesInSOL().toFixed(9)} SOL</div>
       </div>
-
-
-
 
       <div className='overflow-auto' style={{ height: 'calc(100vh - 12rem)' }}>
         {currentTransactions.length > 0 ? (

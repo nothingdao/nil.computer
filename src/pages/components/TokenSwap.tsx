@@ -23,18 +23,18 @@ const TokenSwap = ({ onLadderChange }) => { // Accept the prop from the parent c
   };
 
   return (
-    <div className="p-4 space-y-4 border border-neutral">
-      <ul className="menu menu-sm menu-horizontal bg-base-200">
+    <div className="p-4 space-y-4">
+      {/* <ul className="menu menu-sm menu-horizontal bg-base-200">
         <li><a>Swap</a></li>
         <li><a>Limit</a></li>
         <li><a>Ladder</a></li>
-      </ul>
+      </ul> */}
       <div className="flex items-center justify-center gap-4">
         <div className="flex items-start gap-2">
           <img src={payingToken.imageUrl} alt={payingToken.symbol} className="w-10 h-10 rounded-full" />
           <div className="flex flex-col">
             <select
-              className="select select-bordered w-full"
+              className="select select-bordered w-full select-sm"
               value={payingToken.symbol}
               onChange={e => setPayingToken(tokens.find(t => t.symbol === e.target.value))}
             >
@@ -47,14 +47,14 @@ const TokenSwap = ({ onLadderChange }) => { // Accept the prop from the parent c
             <input
               type="number"
               placeholder="Amount"
-              className="input input-bordered w-full mt-2"
+              className="input input-bordered w-full mt-2 input-sm"
               value={payingAmount}
               onChange={e => setPayingAmount(e.target.value)}
             />
           </div>
         </div>
 
-        <button className="btn btn-neutral" onClick={swapTokens}>
+        <button className="btn btn-outline btn-neutral btn-sm rotate-90" onClick={swapTokens}>
           ⇅
         </button>
 
@@ -62,7 +62,7 @@ const TokenSwap = ({ onLadderChange }) => { // Accept the prop from the parent c
           <img src={receivingToken.imageUrl} alt={receivingToken.symbol} className="w-10 h-10 rounded-full" />
           <div className="flex flex-col">
             <select
-              className="select select-bordered w-full"
+              className="select select-bordered w-full select-sm"
               value={receivingToken.symbol}
               onChange={e => setReceivingToken(tokens.find(t => t.symbol === e.target.value))}
             >
@@ -75,7 +75,7 @@ const TokenSwap = ({ onLadderChange }) => { // Accept the prop from the parent c
             <input
               type="number"
               placeholder="Amount"
-              className="input input-bordered w-full mt-2"
+              className="input input-bordered input-sm w-full mt-2"
               value={receivingAmount}
               onChange={e => setReceivingAmount(e.target.value)}
             />
@@ -83,7 +83,7 @@ const TokenSwap = ({ onLadderChange }) => { // Accept the prop from the parent c
         </div>
       </div>
 
-      <LadderControl onLadderChange={handleLadderChange} />
+      {/* <LadderControl onLadderChange={handleLadderChange} /> */}
     </div>
   );
 };

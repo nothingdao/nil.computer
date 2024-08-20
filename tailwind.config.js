@@ -20,14 +20,14 @@ module.exports = {
   daisyui: {
     themes: [
       'light',
-      'black',
+      'dark',
       {
         dark: {
           "primary": "#ad00ff",
           "secondary": "#00ee00",
           "accent": "#008800",
           "neutral": "#222",
-          "base-100": "#181818",
+          "base-100": "#000",
           "info": "#0096d1",
           "success": "#008710",
           "warning": "#f16e00",

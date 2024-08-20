@@ -1,0 +1,101 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  // Uses connection pooling
+  url       = env("POSTGRES_PRISMA_URL")
+  // Uses direct connection, ⚠️ make sure to keep this to `POSTGRES_URL_NON_POOLING`
+  // or you'll have dangling databases from migrations
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  id            Int         @id @default(autoincrement())
+  owner_address String      @unique
+  userAssets    UserAsset[]
+  indexes       Index[]
+}
+
+model Asset {
+  id                                  String       @id
+  interface                           String
+  content_schema                      String?
+  content_jsonUri                     String?
+  content_files                       Json?
+  content_metadata_name               String?
+  content_metadata_symbol             String?
+  content_metadata_description        String?
+  content_metadata_token_standard     String?
+  content_links_image                 String?
+  content_links_external_url          String?
+  authorities                         Json?
+  compression_eligible                Boolean?
+  compression_compressed              Boolean?
+  compression_data_hash               String?
+  compression_creator_hash            String?
+  compression_asset_hash              String?
+  compression_tree                    String?
+  compression_seq                     Int?
+  compression_leaf_id                 Int?
+  grouping                            Json?
+  royalty_royalty_model               String?
+  royalty_target                      String?
+  royalty_percent                     Float?
+  royalty_basis_points                Int?
+  royalty_primary_sale_happened       Boolean?
+  royalty_locked                      Boolean?
+  creators                            Json?
+  ownership_frozen                    Boolean?
+  ownership_delegated                 Boolean?
+  ownership_delegate                  String?
+  ownership_ownership_model           String?
+  ownership_owner                     String?
+  token_info_symbol                   String?
+  token_info_supply                   String?
+  token_info_decimals                 Int?
+  token_info_token_program            String?
+  token_info_associated_token_address String?
+  mutable                             Boolean?
+  burnt                               Boolean?
+  mint_extensions                     Json?
+  print_max_supply                    Int?
+  print_current_supply                Int?
+  edition_nonce                       Int?
+  userAssets                          UserAsset[]
+  indexes                             IndexAsset[]
+}
+
+model UserAsset {
+  id      Int    @id @default(autoincrement())
+  userId  Int
+  assetId String @db.VarChar(44)
+  balance String
+  user    User   @relation(fields: [userId], references: [id])
+  asset   Asset  @relation(fields: [assetId], references: [id])
+
+  @@unique([userId, assetId])
+}
+
+model Index {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?
+  public      Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  createdBy   Int
+  user        User         @relation(fields: [createdBy], references: [id])
+  assets      IndexAsset[]
+}
+
+model IndexAsset {
+  index   Index  @relation(fields: [indexId], references: [id])
+  indexId Int
+  asset   Asset  @relation(fields: [assetId], references: [id])
+  assetId String
+
+  @@id([indexId, assetId])
+}

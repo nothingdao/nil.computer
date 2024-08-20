@@ -1,6 +1,17 @@
+// src/pages/components/ProgrammableNFTComponent.tsx
 import React from 'react';
+import { ProgrammableNft } from '@prisma/client';
 
-const ProgrammableNFTComponent = ({ asset, isChecked, onCheckboxChange }) => {
+interface ProgrammableNFTComponentProps {
+  asset: ProgrammableNft;
+  isChecked: boolean;
+  onCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const ProgrammableNFTComponent: React.FC<ProgrammableNFTComponentProps> = ({ asset, isChecked, onCheckboxChange }) => {
+  // Destructure content and metadata from asset with default values
+  const { content = {}, content: { metadata = {} } } = asset;
+
   return (
     <div className="border border-neutral p-2 rounded-lg relative">
       <input
@@ -9,22 +20,13 @@ const ProgrammableNFTComponent = ({ asset, isChecked, onCheckboxChange }) => {
         checked={isChecked}
         onChange={onCheckboxChange}
       />
-      <img src={asset.content.files[0]?.uri || ''} alt={asset.content.metadata.name} className="w-full h-auto rounded-t-lg" />
+      <img src={content.files?.[0]?.uri || ''} alt={metadata.name || 'Asset'} className="w-full h-auto rounded-t-lg" />
       <div className="p-2 flex flex-col justify-between h-full">
         <div>
-          <h5 className="text-lg font-bold">{asset.content.metadata.name}</h5>
-          <p>{asset.content.metadata.symbol}</p>
-          <p className="text-xs">{asset.content.metadata.description}</p>
+          <h5 className="text-lg font-bold">{metadata.name || 'Untitled'}</h5>
+          <p>{metadata.symbol || 'Unknown'}</p>
+          <p className="text-xs">{metadata.description || 'No description available'}</p>
         </div>
-        {/* <div className='bottom-0 right-0 absolute'>
-          <div className="dropdown dropdown-top dropdown-end">
-            <div tabIndex={0} role="button" className="btn m-1">Manage</div>
-            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-              <li><a href="#">Transfer</a></li>
-              <li><a href="#">Burn</a></li>
-            </ul>
-          </div>
-        </div> */}
       </div>
     </div>
   );

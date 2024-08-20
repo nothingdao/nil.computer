@@ -7,6 +7,8 @@ import type { AppProps } from 'next/app';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
 import Layout from './components/Layout';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Use require instead of import since order matters
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -15,10 +17,7 @@ require('../styles/wallet-light.css');
 require('../styles/wallet-dark.css');
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
-    // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
-    const network = WalletAdapterNetwork.Devnet;
-
-    // You can also provide a custom RPC endpoint
+    const network = WalletAdapterNetwork.Mainnet;
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
     const wallets = useMemo(
@@ -34,6 +33,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
                     <Layout>
                         <Component {...pageProps} />
                     </Layout>
+                    <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
                 </WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
